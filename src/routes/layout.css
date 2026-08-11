@@ -1,0 +1,94 @@
+@import 'tailwindcss';
+
+:root {
+	--color-prep-100: #c4ebe9;
+	--color-prep-300: #8de5e0;
+	--color-prep-500: #32c7c6;
+	--color-prep-700: #389998;
+	--color-prep-900: #1c4d4c;
+
+	--color-hi-100: #ededed;
+	--color-hi-200: #b7bdf1;
+	--color-hi-300: #a8e4cb;
+	--color-hi-400: #fae84a;
+	--color-hi-500: #ffa179;
+	--color-hi-600: #f25a2a;
+	--color-hi-700: #861d68;
+	--color-hi-800: #41033b;
+
+	--prep-scale: 15;
+	--hi-scale: 2;
+}
+
+html,
+body {
+	padding: 0;
+	margin: 0;
+}
+
+@layer components {
+	.prep-100 {
+		background-color: var(--color-prep-100);
+	}
+	.prep-300 {
+		background-color: var(--color-prep-300);
+	}
+	.prep-500 {
+		background-color: var(--color-prep-500);
+	}
+	.prep-700 {
+		background-color: var(--color-prep-700);
+	}
+	.prep-900 {
+		background-color: var(--color-prep-900);
+	}
+	.hi-100 {
+		background-color: var(--color-hi-100);
+	}
+	.hi-200 {
+		background-color: var(--color-hi-200);
+	}
+	.hi-300 {
+		background-color: var(--color-hi-300);
+	}
+	.hi-400 {
+		background-color: var(--color-hi-400);
+	}
+	.hi-500 {
+		background-color: var(--color-hi-500);
+	}
+	.hi-600 {
+		background-color: var(--color-hi-600);
+	}
+	.hi-700 {
+		background-color: var(--color-hi-700);
+	}
+	.hi-800 {
+		background-color: var(--color-hi-800);
+	}
+
+	.temp-100 {
+		border-color: var(--color-hi-100);
+	}
+	.temp-200 {
+		border-color: var(--color-hi-200);
+	}
+	.temp-300 {
+		border-color: var(--color-hi-300);
+	}
+	.temp-400 {
+		border-color: var(--color-hi-400);
+	}
+	.temp-500 {
+		border-color: var(--color-hi-500);
+	}
+	.temp-600 {
+		border-color: var(--color-hi-600);
+	}
+	.temp-700 {
+		border-color: var(--color-hi-700);
+	}
+	.temp-800 {
+		border-color: var(--color-hi-800);
+	}
+}

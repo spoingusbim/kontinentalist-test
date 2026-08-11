@@ -1,0 +1,149 @@
+[
+	{
+		"location": "Abu Dhabi",
+		"year": 2000,
+		"annual_temp": 27.9,
+		"annual_hi": 30.3,
+		"annual_prep": 22.7
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2001,
+		"annual_temp": 28.1,
+		"annual_hi": 30.6,
+		"annual_prep": 10.1
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2002,
+		"annual_temp": 28.2,
+		"annual_hi": 31.2,
+		"annual_prep": 26.1
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2003,
+		"annual_temp": 28.2,
+		"annual_hi": 31,
+		"annual_prep": 29
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2004,
+		"annual_temp": 28.1,
+		"annual_hi": 30.8,
+		"annual_prep": 38
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2005,
+		"annual_temp": 28.1,
+		"annual_hi": 30.9,
+		"annual_prep": 36
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2006,
+		"annual_temp": 28.2,
+		"annual_hi": 31.1,
+		"annual_prep": 77.2
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2007,
+		"annual_temp": 28.3,
+		"annual_hi": 31.5,
+		"annual_prep": 18
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2008,
+		"annual_temp": 27.8,
+		"annual_hi": 30.4,
+		"annual_prep": 41.6
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2009,
+		"annual_temp": 28.1,
+		"annual_hi": 31,
+		"annual_prep": 58.3
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2010,
+		"annual_temp": 28.8,
+		"annual_hi": 31.8,
+		"annual_prep": 53.1
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2011,
+		"annual_temp": 28.4,
+		"annual_hi": 31.4,
+		"annual_prep": 15.4
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2012,
+		"annual_temp": 28.4,
+		"annual_hi": 31.2,
+		"annual_prep": 19.1
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2013,
+		"annual_temp": 27.9,
+		"annual_hi": 30.6,
+		"annual_prep": 57.4
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2014,
+		"annual_temp": 28,
+		"annual_hi": 30.9,
+		"annual_prep": 34.8
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2015,
+		"annual_temp": 28.8,
+		"annual_hi": 31.4,
+		"annual_prep": 23.2
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2016,
+		"annual_temp": 28.4,
+		"annual_hi": 31.4,
+		"annual_prep": 44.4
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2017,
+		"annual_temp": 28.8,
+		"annual_hi": 31.9,
+		"annual_prep": 45.8
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2018,
+		"annual_temp": 28.8,
+		"annual_hi": 31.9,
+		"annual_prep": 19.2
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2019,
+		"annual_temp": 28.6,
+		"annual_hi": 32,
+		"annual_prep": 37.5
+	},
+	{
+		"location": "Abu Dhabi",
+		"year": 2020,
+		"annual_temp": 28.6,
+		"annual_hi": 31.8,
+		"annual_prep": 81.6
+	}
+]
