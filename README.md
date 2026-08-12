@@ -2,7 +2,7 @@
 
 ## Intro
 
-This is a Typescript project running on Sveltekit. Both assignment sections are placed within the same page, with Section A at the top, and Section B at the bottom.
+This is a Typescript project running on Sveltekit with Tailwind CSS. Bit UI is used as a component library for interactive elements. Both assignment sections are placed within the same page, with Section A at the top, and Section B at the bottom.
 
 ## Run the project
 
