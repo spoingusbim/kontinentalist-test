@@ -15,14 +15,18 @@
 </script>
 
 <main>
-	<Chart data={datavisData} {hiDisplayRange} {hiBandSteps} {prepRange} />
-	<CardGrid data={cardData} />
+	<div class="px-[1vw] pt-5">
+		<Chart data={datavisData} {hiDisplayRange} {hiBandSteps} {prepRange} />
+	</div>
+	<div class="px-5">
+		<CardGrid data={cardData} />
+	</div>
 </main>
 
 <style>
 	main {
 		overflow: hidden;
-		padding: 20px;
+		/* padding: 20px; */
 		display: flex;
 		flex-direction: column;
 		gap: 2.5rem;

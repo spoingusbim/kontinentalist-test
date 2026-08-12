@@ -277,9 +277,9 @@
 		top: 100%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		width: auto;
+		height: auto;
 		border-radius: 50%;
-		height: 35vw;
+		width: 35vw;
 		aspect-ratio: 1 / 1;
 	}
 
