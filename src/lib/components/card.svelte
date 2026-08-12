@@ -17,7 +17,13 @@
 	let slide = $state(0);
 </script>
 
-<Dialog.Root>
+<Dialog.Root
+	onOpenChange={(open) => {
+		if (open === false) {
+			slide = 0;
+		}
+	}}
+>
 	<Dialog.Trigger
 		style={`background-image: url('${bg}')`}
 		class="aspect-square h-auto w-full cursor-pointer bg-cover bg-no-repeat transition-all hover:opacity-80"

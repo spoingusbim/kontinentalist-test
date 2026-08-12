@@ -171,12 +171,20 @@
 				</textPath>
 			</text>
 		</svg>
-		<div aria-hidden="true" data-highest-prep={highestPrep} class="band prep-circle"></div>
+		<div
+			aria-hidden="true"
+			data-highest-prep={highestPrep}
+			style:width="calc(100% - calc(1.5 * 2 * 1.3020833333vw) - 6vw - calc({highestPrep}vw /
+			var(--prep-scale)))"
+			class="band prep-circle"
+		></div>
 		<div
 			aria-hidden="true"
 			data-highest-prep={highestPrep}
 			data-lowest-hi={hiRange[0]}
 			data-highest-hi={hiRange[1]}
+			style:width="calc( 100% - calc(1.5 * 2 * 1.3020833333vw) - 6vw - calc({highestPrep}vw /
+			var(--prep-scale)) - 15vw )"
 			class="band-group hi-circle-group"
 		>
 			<div class="band hi-circle-highest">
@@ -186,7 +194,13 @@
 			</div>
 			{#each new Array(hiBandSteps).fill(0) as _b, i (`${_b}_${i}`)}
 				{@const increment = (hiDisplayRange[1] - hiDisplayRange[0]) / (1 + hiBandSteps)}
-				<div data-steps={hiBandSteps + 1} data-index={i + 1} class="band hi-circle-mid">
+				<div
+					data-steps={hiBandSteps + 1}
+					data-index={i + 1}
+					class="band hi-circle-mid"
+					style:width="calc(calc(10vw * var(--hi-scale) / {hiBandSteps + 1} * {i + 1}) + calc(100% -
+					calc(10vw * var(--hi-scale))))"
+				>
 					<span>
 						{hiDisplayRange[0] + increment * (i + 1)}°C
 					</span>
@@ -252,6 +266,7 @@
 
 	div.band.prep-circle {
 		/* need to * 2 everything as it calculates on both sides */
+		/* unsupported for safari, fallback added as inline style */
 		width: calc(
 			100% - calc(1.5 * 2 * 1.3020833333vw) - 6vw -
 				calc(attr(data-highest-prep vw) / var(--prep-scale))
@@ -259,6 +274,7 @@
 	}
 
 	div.band-group.hi-circle-group {
+		/* unsupported for safari, fallback added as inline style */
 		width: calc(
 			100% - calc(1.5 * 2 * 1.3020833333vw) - 6vw -
 				calc(attr(data-highest-prep vw) / var(--prep-scale)) - 15vw
@@ -269,6 +285,7 @@
 		width: 100%;
 	}
 	div.band.hi-circle-mid {
+		/* unsupported for safari, fallback added as inline style */
 		width: calc(
 			calc(10vw * var(--hi-scale) / attr(data-steps number) * attr(data-index number)) +
 				calc(100% - calc(10vw * var(--hi-scale)))

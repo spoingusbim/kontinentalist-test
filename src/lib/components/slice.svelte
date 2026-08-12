@@ -154,10 +154,14 @@
 	</Tooltip.Content>
 </Tooltip.Root>
 
-<li tabIndex={0} data-angle={angle}>
+<li tabIndex={0} data-angle={angle} style:transform="translate(-50%, -100%) rotate({angle}deg)">
 	<div data-angle={angle}>
 		<h2>{data.year.toString()}</h2>
-		<div data-highest-prep={highestPrep} class="prep-vis">
+		<div
+			data-highest-prep={highestPrep}
+			class="prep-vis"
+			style:width="calc({highestPrep}vw / var(--prep-scale))"
+		>
 			<Tooltip.Trigger
 				class="cursor-pointer rounded-[50%] border-black hover:border"
 				tether={prepTether}
@@ -165,6 +169,7 @@
 				<div
 					aria-label={`Yearly precipitation in mm: ${data.annual_prep}`}
 					data-prep={data.annual_prep}
+					style:width="calc({data.annual_prep}vw / var(--prep-scale))"
 					class={`prep-circle ${prepClass}`}
 				></div>
 			</Tooltip.Trigger>
@@ -178,6 +183,8 @@
 					data-lowest-hi={hiDisplayRange[0]}
 					data-highest-hi={hiDisplayRange[1]}
 					data-hi={data.annual_hi}
+					style:height="calc(({data.annual_hi} - {hiDisplayRange[0]}) / ({hiDisplayRange[1]} - {hiDisplayRange[0]})
+					* 100%)"
 					class={`hi-column ${hiClass} rounded-[50%] border-black group-hover:border`}
 				></div>
 			</Tooltip.Trigger>
@@ -194,6 +201,8 @@
 					data-band-width={bandWidth}
 					data-temp={data.annual_temp}
 					data-angle={angle}
+					style:clip-path="polygon(50% 50%, calc(0.5 * {bandWidth}vw) 0, calc(-0.5 *
+					{bandWidth}vw) 0)"
 					class={`temp ${tempClass}`}
 				></div>
 			</Tooltip.Trigger>
@@ -208,6 +217,7 @@
 		left: 50%;
 		top: 50%;
 		position: absolute;
+		/* unsupported for safari, fallback added as inline style */
 		transform: translate(-50%, -100%) rotate(attr(data-angle deg));
 		transform-origin: bottom;
 	}
@@ -226,6 +236,7 @@
 	li div.prep-vis {
 		height: auto;
 		aspect-ratio: 1 / 1;
+		/* unsupported for safari, fallback added as inline style */
 		width: calc(attr(data-highest-prep vw) / var(--prep-scale));
 		display: flex;
 		align-items: center;
@@ -237,6 +248,7 @@
 		height: auto;
 		aspect-ratio: 1 / 1;
 		border-radius: 50%;
+		/* unsupported for safari, fallback added as inline style */
 		width: calc(attr(data-prep vw) / var(--prep-scale));
 		opacity: 0.9;
 	}
@@ -254,6 +266,7 @@
 		border-radius: 50%;
 		width: 100%;
 		opacity: 0.9;
+		/* unsupported for safari, fallback added as inline style */
 		height: calc(
 			(attr(data-hi number) - attr(data-lowest-hi number)) /
 				(attr(data-highest-hi number) - attr(data-lowest-hi number)) * 100%
@@ -282,6 +295,7 @@
 		border-radius: 50%;
 		height: 100%;
 		aspect-ratio: 1 / 1;
+		/* unsupported for safari, fallback added as inline style */
 		clip-path: polygon(
 			50% 50%,
 			calc(0.5 * attr(data-band-width vw)) 0,
