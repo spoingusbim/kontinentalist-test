@@ -5,12 +5,6 @@
 		data: CardProps[];
 	};
 	const { data }: Props = $props();
-
-	// const grid = $derived.by(()=>{
-	//     const res = data.reduce((p,c)=>{
-	//         c.
-	//     },[])
-	// })
 </script>
 
 <section class="flex w-full">

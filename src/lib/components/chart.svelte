@@ -1,17 +1,17 @@
 <script lang="ts">
 	import { Tooltip } from 'bits-ui';
-	import Slice from './slice.svelte';
+	import Slice, { type ChartData } from './slice.svelte';
 
 	export type ChartProps = {
-		data: {
-			year: number;
-			annual_temp: number;
-			annual_hi: number;
-			annual_prep: number;
-			location: string;
-		}[];
+		hiDisplayRange: [number, number];
+		prepRange: number[];
+		hiBandSteps: number;
+		data: ChartData[];
 	};
-	const { data }: ChartProps = $props();
+
+	const { data, hiDisplayRange, hiBandSteps, prepRange }: ChartProps = $props();
+
+	// get angle of slice
 	const angle = $derived.by(() => {
 		if (data.length === 0) {
 			return 0;
@@ -20,6 +20,7 @@
 		}
 	});
 
+	// get highest precipitation actual data
 	const highestPrep = $derived(
 		data.reduce<number>((p, c) => {
 			if (c.annual_prep > p) {
@@ -30,6 +31,7 @@
 		}, 0)
 	);
 
+	// get highest heat index actual data
 	const highestHi = $derived(
 		data.reduce<number>((p, c) => {
 			if (c.annual_hi > p) {
@@ -39,6 +41,8 @@
 			}
 		}, 0)
 	);
+
+	// get highest temperature actual data
 	const highestTemp = $derived(
 		data.reduce<number>((p, c) => {
 			if (c.annual_temp > p) {
@@ -48,12 +52,14 @@
 			}
 		}, 0)
 	);
-	/** [lowest, highest]*/
-	const hiRangeDisplay: [number, number] = [25, 35];
 
-	const hiRange: [number, number] = $derived([25, highestHi]);
+	// from lowest of range to highest actual value for better contrast
+	const hiRange: [number, number] = $derived([hiDisplayRange[0], highestHi]);
 
-	const tempRange: [number, number] = $derived([25, highestTemp]);
+	// from lowest of range to highest actual value for better contrast
+	const tempRange: [number, number] = $derived([hiDisplayRange[0], highestTemp]);
+
+	// old: used lowest of actual value, generates very "cold" results which may look inaccurate
 	// const tempRange = $derived(
 	// 	data.reduce<[number, number]>(
 	// 		(p, c) => {
@@ -85,9 +91,10 @@
 		<ul>
 			{#each data as d, i (d.year)}
 				<Slice
+					{prepRange}
 					{highestPrep}
 					{hiRange}
-					{hiRangeDisplay}
+					{hiDisplayRange}
 					{tempRange}
 					data={d}
 					angle={angle * i}
@@ -95,7 +102,9 @@
 				/>
 			{/each}
 		</ul>
-		<!-- The circular path math: M cx, (cy - r) a r,r 0 1,1 0,(2*r) a r,r 0 1,1 0,-(2*r) -->
+
+		<!-- Below section renders the bands and labels.
+		 The circular path math: M cx, (cy - r) a r,r 0 1,1 0,(2*r) a r,r 0 1,1 0,-(2*r) -->
 		<svg
 			aria-hidden="true"
 			class="headers prep-header"
@@ -172,17 +181,20 @@
 		>
 			<div class="band hi-circle-highest">
 				<span>
-					{hiRangeDisplay[1]}°C
+					{hiDisplayRange[1]}°C
 				</span>
 			</div>
-			<div class="band hi-circle-mid">
-				<span>
-					{(hiRangeDisplay[1] + hiRangeDisplay[0]) / 2}°C
-				</span>
-			</div>
+			{#each new Array(hiBandSteps).fill(0) as _b, i (`${_b}_${i}`)}
+				{@const increment = (hiDisplayRange[1] - hiDisplayRange[0]) / (1 + hiBandSteps)}
+				<div data-steps={hiBandSteps + 1} data-index={i + 1} class="band hi-circle-mid">
+					<span>
+						{hiDisplayRange[0] + increment * (i + 1)}°C
+					</span>
+				</div>
+			{/each}
 			<div class="band hi-circle-lowest">
 				<span>
-					{hiRangeDisplay[0]}°C
+					{hiDisplayRange[0]}°C
 				</span>
 			</div>
 		</div>
@@ -257,7 +269,10 @@
 		width: 100%;
 	}
 	div.band.hi-circle-mid {
-		width: calc(100% - calc(10vw * var(--hi-scale) / 2));
+		width: calc(
+			calc(10vw * var(--hi-scale) / attr(data-steps number) * attr(data-index number)) +
+				calc(100% - calc(10vw * var(--hi-scale)))
+		);
 	}
 	div.band.hi-circle-lowest {
 		width: calc(100% - calc(10vw * var(--hi-scale)));

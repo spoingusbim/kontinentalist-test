@@ -30,18 +30,19 @@ body {
 	.prep-100 {
 		background-color: var(--color-prep-100);
 	}
-	.prep-300 {
+	.prep-200 {
 		background-color: var(--color-prep-300);
 	}
-	.prep-500 {
+	.prep-300 {
 		background-color: var(--color-prep-500);
 	}
-	.prep-700 {
+	.prep-400 {
 		background-color: var(--color-prep-700);
 	}
-	.prep-900 {
+	.prep-500 {
 		background-color: var(--color-prep-900);
 	}
+	
 	.hi-100 {
 		background-color: var(--color-hi-100);
 	}

@@ -1,61 +1,91 @@
 <script lang="ts">
 	import { Tooltip } from 'bits-ui';
-	import type { ChartProps } from './chart.svelte';
+
+	export type ChartData = {
+		year: number;
+		annual_temp: number;
+		annual_hi: number;
+		annual_prep: number;
+		location?: string;
+	};
 
 	type ColumnProps = {
-		data: ChartProps['data'][number];
+		data: Omit<ChartData, 'location'>;
 		angle: number;
 		highestPrep: number;
 		hiRange: [number, number];
 		tempRange: [number, number];
-		hiRangeDisplay: [number, number];
+		hiDisplayRange: [number, number];
 		angleIncrement: number;
+		prepRange: number[];
 	};
+
 	const {
+		prepRange,
 		data,
 		angle,
 		angleIncrement,
 		highestPrep,
 		hiRange,
 		tempRange,
-		hiRangeDisplay
+		hiDisplayRange
 	}: ColumnProps = $props();
 
-	const bandWidth = $derived((angleIncrement / 360) * 2 * Math.PI * 100);
+	// angle of each slice / 360 * 2 Pi * R
+	const bandWidth = $derived((angleIncrement / 360) * 2 * Math.PI * 35);
 
+	// get precipitation class programatically
 	const prepClass = $derived.by(() => {
-		if (data.annual_prep < 51) {
-			return 'prep-100';
-		} else if (data.annual_prep > 50 && data.annual_prep < 101) {
-			return 'prep-300';
-		} else if (data.annual_prep > 100 && data.annual_prep < 151) {
-			return 'prep-500';
-		} else if (data.annual_prep > 150 && data.annual_prep < 201) {
-			return 'prep-700';
-		} else if (data.annual_prep > 200) {
-			return 'prep-900';
+		const index = prepRange.findIndex((p, i, arr) => {
+			if (i === arr.length - 1 && data.annual_prep > p) {
+				return true;
+			}
+			return data.annual_prep > p && data.annual_prep <= arr[i + 1];
+		});
+
+		if (index >= 0) {
+			return `prep-${index + 1}00`;
 		}
 	});
 
-	const hiBands = $derived.by(() => {
-		const bandsCount = 7;
-		const bandIncrement = (hiRange[1] - hiRange[0]) / bandsCount;
-		const bandRange = new Array(bandsCount + 1).fill(0).map((_, i) => {
-			return hiRange[0] + i * bandIncrement;
+	// old hard-coded method to add class to precipitation bubble
+	// const prepClass = $derived.by(() => {
+	// 	if (data.annual_prep < 51) {
+	// 		return 'prep-100';
+	// 	} else if (data.annual_prep > 50 && data.annual_prep < 101) {
+	// 		return 'prep-300';
+	// 	} else if (data.annual_prep > 100 && data.annual_prep < 151) {
+	// 		return 'prep-500';
+	// 	} else if (data.annual_prep > 150 && data.annual_prep < 201) {
+	// 		return 'prep-700';
+	// 	} else if (data.annual_prep > 200) {
+	// 		return 'prep-900';
+	// 	}
+	// });
+
+	// get heat index colour steps
+	const hiSteps = $derived.by(() => {
+		const stepCount = 7;
+		const stepIncrement = (hiRange[1] - hiRange[0]) / stepCount;
+		const stepArray = new Array(stepCount + 1).fill(0).map((_, i) => {
+			return hiRange[0] + i * stepIncrement;
 		});
-		return bandRange;
-	});
-	const tempBands = $derived.by(() => {
-		const bandsCount = 7;
-		const bandIncrement = (tempRange[1] - tempRange[0]) / bandsCount;
-		const bandRange = new Array(bandsCount + 1).fill(0).map((_, i) => {
-			return hiRange[0] + i * bandIncrement;
-		});
-		return bandRange;
+		return stepArray;
 	});
 
+	// get temp index colour steps
+	const tempSteps = $derived.by(() => {
+		const stepCount = 7;
+		const stepIncrement = (tempRange[1] - tempRange[0]) / stepCount;
+		const stepArray = new Array(stepCount + 1).fill(0).map((_, i) => {
+			return hiRange[0] + i * stepIncrement;
+		});
+		return stepArray;
+	});
+
+	// get heat index class programatically
 	const hiClass = $derived.by(() => {
-		const index = hiBands.findIndex((b, i, arr) => {
+		const index = hiSteps.findIndex((b, i, arr) => {
 			if (i === arr.length - 1) {
 				return data.annual_hi >= b;
 			} else {
@@ -64,8 +94,10 @@
 		});
 		return `hi-${index + 1}00`;
 	});
+
+	// get temperature class programatically
 	const tempClass = $derived.by(() => {
-		const index = tempBands.findIndex((b, i, arr) => {
+		const index = tempSteps.findIndex((b, i, arr) => {
 			if (i === arr.length - 1) {
 				return data.annual_temp >= b;
 			} else {
@@ -75,16 +107,21 @@
 		return `temp-${index + 1}00`;
 	});
 
+	// for tooltip
 	const prepTether = Tooltip.createTether<{
 		label: string;
 		description: string;
 		shortcut: string;
 	}>();
+
+	// for tooltip
 	const hiTether = Tooltip.createTether<{
 		label: string;
 		description: string;
 		shortcut: string;
 	}>();
+
+	// for tooltip
 	const tempTether = Tooltip.createTether<{
 		label: string;
 		description: string;
@@ -116,7 +153,8 @@
 		</div>
 	</Tooltip.Content>
 </Tooltip.Root>
-<li data-angle={angle}>
+
+<li tabIndex={0} data-angle={angle}>
 	<div data-angle={angle}>
 		<h2>{data.year.toString()}</h2>
 		<div data-highest-prep={highestPrep} class="prep-vis">
@@ -133,30 +171,29 @@
 		</div>
 		<div class="hi-vis" aria-label={`Average annual heat index: ${data.annual_hi}`}>
 			<Tooltip.Trigger
-				class="h-full w-full cursor-pointer rounded-[50%] border-black hover:border"
+				class="group flex h-full w-full cursor-pointer items-end justify-end"
 				tether={hiTether}
 			>
 				<div
-					data-lowest-hi={hiRangeDisplay[0]}
-					data-highest-hi={hiRangeDisplay[1]}
+					data-lowest-hi={hiDisplayRange[0]}
+					data-highest-hi={hiDisplayRange[1]}
 					data-hi={data.annual_hi}
-					class={`hi-column ${hiClass}`}
+					class={`hi-column ${hiClass} rounded-[50%] border-black group-hover:border`}
 				></div>
 			</Tooltip.Trigger>
 		</div>
-
 		<div
 			class="temp-vis pointer-events-none"
 			aria-label={`Average annual temperature: ${data.annual_temp}`}
 		>
 			<Tooltip.Trigger
-				class="pointer-events-auto z-50 h-[1vw] cursor-pointer rounded-[50%] border-black hover:border"
+				class="pointer-events-auto z-50 h-[1vw] cursor-pointer rounded-[50%] hover:opacity-80"
 				tether={tempTether}
 			>
 				<div
 					data-band-width={bandWidth}
 					data-temp={data.annual_temp}
-					data-angle={angleIncrement / 2}
+					data-angle={angle}
 					class={`temp ${tempClass}`}
 				></div>
 			</Tooltip.Trigger>
@@ -205,18 +242,12 @@
 	}
 
 	li div .hi-vis {
-		width: 7px;
+		width: 0.5vw;
 		height: 10vw;
 		display: flex;
 		align-items: end;
 		justify-content: end;
 		margin-bottom: 5vw;
-	}
-
-	li div .hi-vis > * {
-		height: 100% !important;
-		width: 100% !important;
-		appearance: none;
 	}
 
 	li div .hi-vis .hi-column {
@@ -240,7 +271,7 @@
 	}
 
 	li div .temp {
-		transform: rotate(calc(5 * attr(data-angle deg)));
+		transform: rotate(calc(45deg));
 		transform-origin: center;
 		border-width: 1vw;
 		border-style: solid;
@@ -253,8 +284,8 @@
 		aspect-ratio: 1 / 1;
 		clip-path: polygon(
 			50% 50%,
-			calc(0.5 * attr(data-band-width %)) 0,
-			calc(-0.5 * attr(data-band-width %)) 0
+			calc(0.5 * attr(data-band-width vw)) 0,
+			calc(-0.5 * attr(data-band-width vw)) 0
 		);
 	}
 </style>

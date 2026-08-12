@@ -20,7 +20,7 @@
 <Dialog.Root>
 	<Dialog.Trigger
 		style={`background-image: url('${bg}')`}
-		class="aspect-square h-auto w-full cursor-pointer bg-cover bg-no-repeat"
+		class="aspect-square h-auto w-full cursor-pointer bg-cover bg-no-repeat transition-all hover:opacity-80"
 	>
 		<div class="sr-only">{title}</div>
 	</Dialog.Trigger>
@@ -42,23 +42,26 @@
 						<div class="relative grid w-full grid-cols-1 bg-white md:max-w-210 md:grid-cols-3">
 							<div
 								style={`background-image: url('${content[slide].bg}')`}
-								class="aspect-4/3 h-full w-full bg-cover bg-no-repeat md:aspect-square"
+								class="aspect-square h-full w-full bg-cover bg-no-repeat"
 							></div>
 							<div class="col-span-2 flex h-auto w-full flex-col p-5">
-								<Dialog.Title level={1} class="text-xl font-semibold tracking-tight">
+								<Dialog.Title
+									level={1}
+									class="mb-1 text-sm font-semibold tracking-tight uppercase min-[480px]:text-base"
+								>
 									{carousel_title}
 								</Dialog.Title>
-
-								<Dialog.Title level={2} class="mb-2  text-2xl font-semibold">
+								<Dialog.Title level={2} class="mb-4 text-xl font-semibold min-[480px]:text-2xl">
 									{content[slide].action}
 								</Dialog.Title>
-
-								<Dialog.Description class="mb-5 text-lg">
+								<Dialog.Description class="mb-5 text-base min-[480px]:text-lg">
 									{content[slide].desc}
 								</Dialog.Description>
-								<div class="controls mt-auto flex w-full items-center justify-between">
+								<div
+									class="controls mt-auto flex w-full items-center justify-between text-sm min-[480px]:text-base"
+								>
 									<button
-										class="cursor-pointer"
+										class="cursor-pointer transition-all hover:opacity-60"
 										onclick={() => {
 											if (slide === 0) {
 												slide = content.length - 1;
@@ -81,9 +84,9 @@
 										</svg>
 										<span class="sr-only">Previous</span></button
 									>
-									{slide + 1} of {content.length}
+									<span class="text-sm">{slide + 1} of {content.length}</span>
 									<button
-										class="cursor-pointer"
+										class="cursor-pointer transition-all hover:opacity-60"
 										onclick={() => {
 											if (slide === content.length - 1) {
 												slide = 0;
@@ -109,7 +112,8 @@
 									>
 								</div>
 							</div>
-							<Dialog.Close class="absolute top-5 right-5 cursor-pointer"
+							<Dialog.Close
+								class="absolute top-5 right-5 cursor-pointer transition-all hover:opacity-60"
 								><svg
 									aria-hidden="true"
 									xmlns="http://www.w3.org/2000/svg"
